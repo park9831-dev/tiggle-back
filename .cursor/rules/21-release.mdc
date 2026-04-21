@@ -1,0 +1,13 @@
+---
+globs: []
+alwaysApply: false
+---
+
+# 릴리스/버전 전략 (수동 적용)
+
+## 버전 관리
+- sever 준수:
+  - 내부 변경 = patch
+  - 계약 추가 = minor
+  - 계약 변경 = major
+- CHANGELOG.md 형식: Added/Changed/Fixed/Deprecated/Removed/Security

@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: tiggle
+  profiles:
+    active: local
+
+jwt:
+  secret: ThisIsADevelopmentOnlyJwtSecretKeyAtLeast32CharsLong
+  expiration-ms: 3600000
+

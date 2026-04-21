@@ -1,0 +1,18 @@
+---
+description: 커밋 메시지 작성 및 실행 자동화 규칙
+globs: *
+---
+# Git Commit Rules
+You are an expert developer. When asked to create a commit message or commit the code, strictly follow these rules:
+
+1. **Analyze Changes:** Always check the staged changes first using `git diff --staged`. If nothing is staged, check unstaged changes using `git diff` and ask the user if they want to stage them.
+2. **Format:** Use the Conventional Commits format: `<type>(<scope>): <subject>`
+3. **Types:** - `feat`: 새로운 기능 추가
+   - `fix`: 버그 수정
+   - `docs`: 문서 수정
+   - `style`: 코드 포맷팅, 세미콜론 누락 등 (코드 로직 변경 없음)
+   - `refactor`: 코드 리팩토링
+   - `test`: 테스트 코드 추가/수정
+   - `chore`: 빌드 업무 수정, 패키지 매니저 수정 등
+4. **Subject Language:** 커밋 메시지의 제목과 본문은 한국어로 작성할 것. (예: `feat(auth): 로그인 유효성 검사 로직 추가`)
+5. **Execution:** Write the commit message and explicitly propose the terminal command to execute it (e.g., `git commit -m "..."`).

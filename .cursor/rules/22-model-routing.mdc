@@ -1,0 +1,41 @@
+---
+globs: []
+alwaysApply: false
+---
+
+# 모델 라우팅 (수동 적용)
+
+## 모델 기본값
+- 전체 기본값: GPT-5.1-codex (안정성 + 코드 품질)
+
+## 태스크별 모델 우선순위
+
+### @task:discussion
+- 우선: claude-4.5-sonnet
+- 대체: gpt-5.1-codex
+- 용도: 스키마 설계, 데이터 처리 방식, 아키텍처 논의 등 추론 중심 작업
+
+### @task:docs
+- 우선: gpt-5.1-codex
+- 대체: claude-4.5-sonnet
+- 용도: 문서화/요약/정형화 작업, 설명 가다듬기나 구조화 필요 시 Claude 활용
+
+### @task:docs-refactor
+- 우선: claude-4.5-sonnet
+- 대체: gpt-5.1-codex
+- 용도: 책임 단위별 문서 묶기, Index.md 업데이트, 최종 포맷팅은 GPT가 마무리
+
+### @task:implementation
+- 우선: gpt-5.1-codex
+- 대체: claude-4.5-sonnet
+- 용도: 실제 코드 구현/버그 수정, 버그 원인 추론은 Claude로 교차 점검
+
+### @task:deep
+- 우선: gemini-3-pro
+- 대체: claude-4.5-sonnet
+- 용도: 대형 JSON 정규화, 멀티모달 입력 분석 등 특수 심층 태스크
+
+## 사용 규칙
+- 작업 시작 시 @task 태그를 달아 컨텍스트 명확히 할 것
+  - 예: @task:discussion, @task:docs, @task:implementation
+- 태그 누락 시 default_model(gpt-5.1) 사용

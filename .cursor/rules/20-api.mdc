@@ -1,0 +1,51 @@
+---
+globs: []
+alwaysApply: false
+---
+
+# 프로젝트 규칙 (수동 적용)
+
+## 프로젝트 기술 스택/범위
+- Node.js 최신 LTS (예: 22)
+- TypeScript (strict 모드, 표준 네이밍 규칙)
+- Yarn Workspaces (모노레포)
+- Fastify (HTTP/REST)
+- UDP (dgram, JSON 메시지, MTU 내 단일 데이터그램)
+- 3계층 아키텍처:
+  1. Fetch & Normalize (API → 정규화, 캐싱)
+  2. REST API (정규화된 데이터 제공, 필요 시 Fetch 호출)
+  3. UDP Gateway (기존 메시지 형식 유지, 초저지연)
+- shared 패키지: DTO, Config, utils, logging 공통화
+
+## 데이터/캐시 원칙
+- 외부 API 대형 JSON → 정규화 후 캐싱
+- 캐시 계층: In-memory(짧은 TTL) → Redis(중간 TTL) → (선택) 영속 DB
+- 캐시 키: char:<name>:v<schemaVersion>, 메타: updatedAt, version
+- stale-while-revalidate 허용, 강제 리프레시(쿼리/헤더) 제공
+- Lost Ark armories 상세: 직업 각인 2개 고려(스키마/요약 반영)
+
+## 동시성/안정성
+- Fetch: 싱글플라이트, 서킷브레이커, 지수백오프 재시도
+- REST: bounded concurrency, 응답 캐시 헤더(ETag/Cache-Control)
+- UDP: 최소 처리 → lock-free 큐 → 워커풀, 과부하 시 드롭
+- 장애 시 graceful degrade(캐시 fallback), 외부 API 장애 시 캐시 서빙
+
+## DB/스키마/마이그레이션
+- DB 스키마는 코드와 분리, up/down 마이그레이션 유지
+- 파괴적 변경 금지: Deprecation → 백필 → 교체 → 삭제 단계
+- 변경/인덱스 전략 간단 메모 남기기
+
+## 외부 API/오픈소스 규칙
+- API 사용 시 README·코드 주석에 참조 버전 명시
+  - 예: @api: v2025-08-01
+- 외부 OSS 사용 시 README "About/License"에 출처·라이선스·버전·링크 명시
+- 새 의존성 도입은 기본 금지, 불가피 시 근거 3줄 요약 기록
+
+## 퍼포먼스/레이트리밋/회복성
+- 목표: REST p95 ≤ 50ms, UDP p95 ≤ 10ms (캐시 히트 기준)
+- 레이트리밋: REST와 Fetch 분리, X-RateLimit-* 일관 관리
+- 외부 장애 시 폴백/서킷 동작 문서화
+
+## 모노레포 매너
+- shared-* 변경 시 영향 범위 요약, 순환 의존 금지
+- TS Project References 그래프 유지, 깨질 시 변화 요약 첨부

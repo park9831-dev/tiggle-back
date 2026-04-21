@@ -1,0 +1,32 @@
+---
+globs: ["**/*.ts", "**/*.tsx", "**/*.mts"]
+alwaysApply: false
+---
+
+# TypeScript 코드 스타일 규칙
+
+## 컴파일러 옵션
+- strict, noUncheckedIndexedAccess, exactOptionalPropertyTypes 사용
+- 모듈 시스템: ESM ("type": "module")
+- 경로 별칭: @/*
+
+## 코드 스타일
+- ESLint(+import 정렬, unused-imports, jsonc) + Prettier 단일 포맷터
+- 네이밍 규칙:
+  - PascalCase: 타입/클래스
+  - camelCase: 변수/함수
+  - UPPER_SNAKE_CASE: 상수
+- SRP(단일 책임 원칙) 준수
+- async/await 우선, 모든 Promise 에러 처리
+
+## 파일 상단 주석
+- 변경 메타 포함:
+  - @cursor-change: <ISO-date>, <semver>, <1~2줄 요약>
+- 생성 코드에는 "왜/무엇/경계조건" 설명 주석 포함
+
+## 코드 생성 지침
+- 생성 파일: TypeScript + ESM, 최소 1개 테스트 포함
+- 로깅: pino(JSON 구조), requestId 포함, 민감정보 금지
+- 환경변수: .env(.example 제공), 비밀값 하드코딩 금지
+- 샘플 라우트/구현은 사용자가 요청할 때만 생성
+- 불필요한 boilerplate/Mock 데이터 금지
