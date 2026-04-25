@@ -10,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 @EnableAsync
+@org.springframework.scheduling.annotation.EnableScheduling
 public class AsyncConfig implements WebMvcConfigurer {
 
     private static final long ASYNC_TIMEOUT = 60 * 60 * 1000L; // 1 hour

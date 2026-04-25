@@ -8,3 +8,17 @@ jwt:
   secret: ThisIsADevelopmentOnlyJwtSecretKeyAtLeast32CharsLong
   expiration-ms: 3600000
 
+encryption:
+  aes:
+    key: ${AES_ENCRYPTION_KEY:}
+
+kiwoom:
+  api:
+    base-url: https://api.kiwoom.com
+    mock-base-url: https://mockapi.kiwoom.com
+    order-path: /api/dostk/ordr
+    token-path: /oauth2/token
+    revoke-path: /oauth2/revoke
+    appkey: ${KIWOOM_APP_KEY:}
+    secretkey: ${KIWOOM_SECRET_KEY:}
+

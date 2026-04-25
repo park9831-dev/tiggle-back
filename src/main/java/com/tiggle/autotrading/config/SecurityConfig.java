@@ -54,6 +54,8 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/api/v1/signup").hasRole("ADMIN")
                         .requestMatchers("/api/v1/users").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/kiwoom/token/**").authenticated()
+                        .requestMatchers("/api/v1/kiwoom/credential/**").authenticated()
                         // All remaining endpoints require authenticated users.
                         .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception
