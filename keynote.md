@@ -55,6 +55,56 @@ CREATE TABLE tb_kiwoom_credential (
 
 ## 4. 키움증권 REST API 연동
 
+### 공통 호출 규격
+
+| 항목 | 내용 |
+|------|------|
+| Base URL (운영) | `https://api.kiwoom.com` |
+| Base URL (모의) | `https://mockapi.kiwoom.com` |
+| Method | POST |
+| Content-Type | `application/json;charset=UTF-8` |
+| 인증 헤더 | `authorization: Bearer {접근토큰}` |
+| TR 지정 헤더 | `api-id: {TR코드}` |
+| 페이지네이션 헤더 | `cont-yn: Y`, `next-key: {키}` (응답 헤더로 수신 후 다음 요청에 사용) |
+
+### 4-0. 종목정보 조회
+
+키움 REST API 경로: `POST /api/dostk/stkinfo`
+
+**단일 종목 기본정보 (ka10001)**
+
+| 파라미터 | 설명 | 필수 |
+|----------|------|------|
+| `stk_cd` | 종목코드 (예: 005930) | Y |
+
+**응답 주요 필드**
+
+| 필드 | 설명 |
+|------|------|
+| `stk_nm` | 종목명 |
+| `mrkt_tp` | 시장구분 (1=코스피, 2=코스닥, 3=코넥스) |
+| `upjong_cd` | 업종코드 |
+| `upjong_nm` | 업종명 |
+| `face_val` | 액면가 |
+| `lst_stk_qty` | 상장주식수 |
+| `capital` | 자본금 |
+| `ipo_dt` | 상장일 YYYYMMDD |
+| `settle_month` | 결산월 |
+
+**시장별 전체 종목 리스트**
+
+> ⚠️ TR코드 미확정 — 키움 포털(openapi.kiwoom.com) 종목정보(01) 카테고리에서 확인 후
+> `KiwoomStockService.java` 의 `TR_STOCK_LIST` 상수를 교체할 것.
+
+| 파라미터 | 설명 | 필수 |
+|----------|------|------|
+| `mrkt_tp` | 시장구분 (1=코스피, 2=코스닥) | Y |
+
+응답에 `cont_yn=Y` 이면 `next_key` 를 다음 요청 헤더에 담아 페이지네이션 진행.
+
+---
+
+
 ### 4-1. 인증 구조
 
 키움 REST API는 **OAuth2 Client Credentials** 방식을 사용한다.
@@ -204,6 +254,12 @@ export AES_ENCRYPTION_KEY=<생성된_32바이트_Base64_키>
 |--------|-----|------|------|
 | POST | `/api/v1/kiwoom/token/issue` | 인증 | 접근토큰 수동 발급 |
 | DELETE | `/api/v1/kiwoom/token/revoke` | 인증 | 접근토큰 폐기 |
+
+### 종목정보
+| Method | URL | 권한 | 설명 |
+|--------|-----|------|------|
+| GET | `/api/v1/stocks/{stkCd}` | 인증 | 단일 종목 기본정보 (TR: ka10001) |
+| GET | `/api/v1/stocks?mrktTp={1\|2}` | 인증 | 시장별 전체 종목 리스트 (TR: 포털 확인 필요) |
 
 ### 신용주문
 | Method | URL | 권한 | 설명 |

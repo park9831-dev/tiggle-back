@@ -17,6 +17,9 @@ public class KiwoomApiConfig {
     @Value("${kiwoom.api.order-path}")
     private String orderPath;
 
+    @Value("${kiwoom.api.stkinfo-path}")
+    private String stkinfoPath;
+
     @Value("${kiwoom.api.token-path}")
     private String tokenPath;
 
@@ -36,6 +39,10 @@ public class KiwoomApiConfig {
 
     public String getOrderUrl() {
         return baseUrl + orderPath;
+    }
+
+    public String getStkinfoUrl() {
+        return baseUrl + stkinfoPath;
     }
 
     public String getTokenUrl() {
